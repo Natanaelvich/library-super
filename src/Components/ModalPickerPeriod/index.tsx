@@ -1,5 +1,5 @@
 import { AntDesign } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Alert, Modal } from "react-native";
 import { useTheme } from "styled-components/native";
 
@@ -9,18 +9,29 @@ type Props = {
   visible: boolean;
   onClose: () => void;
   handleSearch: (initialYear: string, finalYear: string) => void;
+  initialYear: string;
+  finalYear: string;
+  setInitialYear: Dispatch<SetStateAction<string>>;
+  setFinalYear: Dispatch<SetStateAction<string>>;
 };
 
 const ModalPickerPeriod: React.FC<Props> = ({
   visible,
   onClose,
   handleSearch,
+  initialYear,
+  finalYear,
+  setFinalYear,
+  setInitialYear,
 }) => {
   const theme = useTheme();
 
-  const [initialYear, setInitialYear] = useState("2021");
-  const [finalYear, setFinalYear] = useState("2021");
-
+  
+  useEffect(()=>{
+      setInitialYear(initialYear || "2021")
+      setFinalYear(finalYear || "2021")
+  },[]);
+  
   function handleSearchByPeriod() {
     if (initialYear.length === 0 || finalYear.length === 0) {
       Alert.alert("Todos os campos são obrigatórios");
@@ -32,7 +43,7 @@ const ModalPickerPeriod: React.FC<Props> = ({
       return;
     }
 
-    onClose()
+    onClose();
     handleSearch(initialYear, finalYear);
   }
   return (
