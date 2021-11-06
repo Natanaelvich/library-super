@@ -2,9 +2,10 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Keyboard } from "react-native";
+import { useTheme } from "styled-components/native";
 import CardBook from "../../Components/CardBook";
 import ModalPickerPeriod from "../../Components/ModalPickerPeriod";
-import api from "../../services/api";
+import useBooks from "../../hooks/useBooks";
 
 import * as S from "./styles";
 
@@ -19,12 +20,19 @@ export type Book = {
 
 const Home: React.FC = () => {
   const navigation = useNavigation();
+  const theme = useTheme()
 
-  const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(false);
+  const {
+    books,
+    results,
+    loading,
+    getBooks,
+    handleSearchBook,
+    handleSearchBookByPeriod,
+  } = useBooks();
+
   const [querySearch, setQuerySearch] = useState("");
   const [showModalPickerPeriod, setShowModalPickerPeriod] = useState(false);
-const [results, setResults] = useState(0)
 
   function handleOpenDrawer() {
     navigation.dispatch(DrawerActions.openDrawer());
@@ -34,66 +42,7 @@ const [results, setResults] = useState(0)
     navigation.navigate("BookDetails", { bookId: book.id });
   }
 
-  async function handleSearchBook() {
-    try {
-      Keyboard.dismiss();
-
-      setLoading(true);
-      const response = await api.get("/api/Livros", {
-        params: {
-          Busca: querySearch,
-        },
-      });
-
-      setBooks(response.data.items);
-      setResults(response.data.totalCount)
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function handleSearchBookByPeriod(
-    initialYear: string,
-    finalYear: string
-  ) {
-    try {
-      Keyboard.dismiss();
-      setShowModalPickerPeriod(false);
-
-      setLoading(true);
-      const response = await api.get("/api/Livros", {
-        params: {
-          AnoInicial: initialYear,
-          AnoFinal: finalYear,
-        },
-      });
-
-      setBooks(response.data.items);
-      setResults(response.data.totalCount)
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
-    async function getBooks() {
-      try {
-        setLoading(true);
-        const response = await api.get("/api/Livros");
-
-        setBooks(response.data.items);
-        setResults(response.data.totalCount)
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
     getBooks();
   }, []);
 
@@ -101,7 +50,7 @@ const [results, setResults] = useState(0)
     <S.Container>
       <S.Header>
         <S.ButtonMenu onPress={handleOpenDrawer}>
-          <MaterialIcons name="menu" size={24} />
+          <MaterialIcons name="menu" size={24} color={theme.colors.textBold} />
         </S.ButtonMenu>
 
         <S.TextSmall>Bem vindo</S.TextSmall>
@@ -112,9 +61,13 @@ const [results, setResults] = useState(0)
             placeholder="Digite sua busca aqui..."
             value={querySearch}
             onChangeText={setQuerySearch}
+            placeholderTextColor={theme.colors.textBold}
           />
 
-          <S.ButtonSearch onPress={handleSearchBook} disabled={loading}>
+          <S.ButtonSearch
+            onPress={() => handleSearchBook(querySearch)}
+            disabled={loading}
+          >
             {loading ? (
               <ActivityIndicator
                 size="small"
@@ -135,12 +88,7 @@ const [results, setResults] = useState(0)
             </S.TextUnderline>{" "}
           </S.TextSmall>
 
-{results > 0 && (
-
-    <S.TextResults>
-{results} resultados
-          </S.TextResults>
-              )}
+          {results > 0 && <S.TextResults>{results} resultados</S.TextResults>}
         </S.WrapperRow>
       </S.Header>
 

@@ -3,6 +3,7 @@ import styled from "styled-components/native";
 export const Container = styled.View`
   flex: 1;
   padding: 55px 24px 24px;
+  background-color: ${({theme})=> theme.colors.gray};
 `;
 
 export const ButtonBack = styled.TouchableOpacity`
@@ -14,6 +15,7 @@ font-size: 24px;
 font-weight: bold;
 margin-top: 24px;
 margin-bottom: 8px;
+color: ${({theme})=> theme.colors.textBold};
 `;
 
 export const WrapperText = styled.View`
@@ -31,13 +33,13 @@ export const ContentRow = styled.View`
 export const TextBold = styled.Text`
   font-size: 14px;
 
-  color: #000000;
+  color: ${({theme})=> theme.colors.textBold};
   font-weight: bold;
   margin-left: 4px;
 `;
 
 export const TextRegular = styled.Text`
-  color: #4e4e4e;
+  color: ${({theme})=> theme.colors.textRegular};
   font-weight: normal;
 `;
 
@@ -50,7 +52,7 @@ align-self: center;
 export const ButtonAddFavoriteText = styled.Text`
 font-size: 16px;
 font-weight: bold;
-color: #F44336;
+color:  ${({theme})=> theme.colors.primary};
 margin-left: 8px;
 `
 

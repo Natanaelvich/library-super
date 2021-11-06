@@ -7,7 +7,8 @@ const light = {
   
       textBold: '#000000',
       textRegular: '#4E4E4E',
-      gray: '#C4C4C4',
+      textSmall : '#949494',
+      gray: '#f4f4f4',
       white: '#fff',
     },
   

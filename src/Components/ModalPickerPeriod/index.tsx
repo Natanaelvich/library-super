@@ -1,6 +1,7 @@
 import { AntDesign } from "@expo/vector-icons";
 import React, { useState } from "react";
-import { Modal } from "react-native";
+import { Alert, Modal } from "react-native";
+import { useTheme } from "styled-components/native";
 
 import * as S from "./styles";
 
@@ -15,9 +16,25 @@ const ModalPickerPeriod: React.FC<Props> = ({
   onClose,
   handleSearch,
 }) => {
+  const theme = useTheme();
+
   const [initialYear, setInitialYear] = useState("2021");
   const [finalYear, setFinalYear] = useState("2021");
 
+  function handleSearchByPeriod() {
+    if (initialYear.length === 0 || finalYear.length === 0) {
+      Alert.alert("Todos os campos são obrigatórios");
+      return;
+    }
+
+    if (Number(initialYear) > Number(finalYear)) {
+      Alert.alert("A data inicial deve ser inferior a data final.");
+      return;
+    }
+
+    onClose()
+    handleSearch(initialYear, finalYear);
+  }
   return (
     <Modal
       animationType="fade"
@@ -31,8 +48,8 @@ const ModalPickerPeriod: React.FC<Props> = ({
             <AntDesign
               name="close"
               size={24}
-              color="black"
               onPress={() => onClose()}
+              color={theme.colors.textBold}
             />
           </S.WrapperCloseButon>
 
@@ -44,7 +61,11 @@ const ModalPickerPeriod: React.FC<Props> = ({
               keyboardType="number-pad"
             />
 
-            <AntDesign name="arrowright" size={24} color="black" />
+            <AntDesign
+              name="arrowright"
+              size={24}
+              color={theme.colors.textBold}
+            />
 
             <S.TextInput
               value={finalYear}
@@ -53,7 +74,7 @@ const ModalPickerPeriod: React.FC<Props> = ({
               keyboardType="number-pad"
             />
           </S.WrapperInputs>
-          <S.ButtonSearch onPress={() => handleSearch(initialYear, finalYear)}>
+          <S.ButtonSearch onPress={handleSearchByPeriod}>
             <S.ButtonSearchText>BUSCAR</S.ButtonSearchText>
           </S.ButtonSearch>
         </S.ModalContent>

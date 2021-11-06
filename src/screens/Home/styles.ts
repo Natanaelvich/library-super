@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 
 export const Container = styled.View`
   flex: 1;
-  background: #f5f5f5;
+  background: ${({theme})=> theme.colors.gray};
 
   padding-top: 35px;
 `;
@@ -27,14 +27,14 @@ export const TextLarge = styled.Text`
   font-size: 16px;
   line-height: 17px;
 
-  color: #3e3e70;
+  color:  ${({theme})=> theme.colors.secundary};
   font-weight: bold;
   margin-bottom: 12px;
 `;
 
 export const TextSmall = styled.Text`
   font-size: 12px;
-  color: #949494;
+  color: ${({theme})=> theme.colors.textSmall};
   margin-bottom: 8px;
 `;
 
@@ -47,7 +47,8 @@ export const TextInput = styled.TextInput`
   height: 43px;
   flex: 1;
 
-  background: #ffffff;
+  background: ${({theme})=> theme.colors.white};
+  color: ${({theme})=> theme.colors.textBold};
   border-radius: 12px;
 
   padding: 0 16px;
@@ -58,7 +59,7 @@ export const ButtonSearch = styled.TouchableOpacity`
   width: 42px;
   height: 42px;
 
-  background: #fb7750;
+    background: ${({theme})=> theme.colors.primary};
   border-radius: 12px;
   align-items: center;
   justify-content: center;
@@ -72,7 +73,7 @@ export const WrapperRow = styled.View`
 
 export const TextResults = styled.Text`
  font-size: 12px;
-  color: #949494;
+  color: ${({theme})=> theme.colors.textRegular};
 `
 
 export const TextUnderline = styled.Text`
@@ -80,5 +81,5 @@ export const TextUnderline = styled.Text`
 
   text-decoration-line: underline;
 
-  color: #fb7750;
+  color: ${({theme})=> theme.colors.primary};
 `;

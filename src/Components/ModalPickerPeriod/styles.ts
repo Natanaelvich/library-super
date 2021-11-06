@@ -8,7 +8,7 @@ export const ModalContainer = styled.View`
 
 export const ModalContent = styled.View`
   padding: 54px 24px 24px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.gray};
   align-items: center;
   justify-content: center;
   position: relative;
@@ -21,7 +21,7 @@ export const ModalContent = styled.View`
 export const WrapperInputs = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  margin : 24px 0;
+  margin: 24px 0;
   width: 100%;
   align-items: center;
 `;
@@ -29,14 +29,14 @@ export const WrapperInputs = styled.View`
 export const TextInput = styled.TextInput`
   height: 51px;
 
-  background: #3e3e70;
+  background: ${({ theme }) => theme.colors.secundary};
   border-radius: 6px;
   width: 45%;
 
   font-size: 18px;
-color: #FFFFFF;
+  color: ${({ theme }) => theme.colors.white};
 
-text-align: center;
+  text-align: center;
 `;
 
 export const ButtonSearch = styled.TouchableOpacity`
@@ -47,14 +47,12 @@ export const ButtonSearch = styled.TouchableOpacity`
   width: 100%;
   height: 45px;
 
-  background: #fb7750;
-
-  
+  background: ${({theme})=> theme.colors.primary};
 `;
 
 export const ButtonSearchText = styled.Text`
   font-weight: bold;
-  color: #fff;
+  color: ${({theme})=> theme.colors.white};
 `;
 
 export const WrapperCloseButon = styled.View`
