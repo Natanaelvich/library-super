@@ -25,7 +25,8 @@ export type BooksContextData = {
   loadingPagination: boolean;
   results: number;
   getBooks: () => Promise<void>;
-  getBooksPagination: () => Promise<void>;
+  getBooksPagination: (querySearch: string,initialYear: string,
+    finalYear: string) => Promise<void>;
   handleSearchBook: (querySearch: string) => Promise<void>;
   handleSearchBookByPeriod: (
     initialYear: string,
@@ -62,7 +63,8 @@ const BooksProvider: React.FC = ({ children }) => {
     }
   }
 
-  const getBooksPagination = useCallback(async () => {
+  const getBooksPagination = useCallback(async (querySearch: string,initialYear: string,
+    finalYear: string) => {
     try {
         console.log(skipCount)
       setLoadingPagination(true);
@@ -70,6 +72,9 @@ const BooksProvider: React.FC = ({ children }) => {
         params: {
           MaxResultCount: 20,
           SkipCount: skipCount,
+          Busca: querySearch,
+          AnoInicial: initialYear,
+          AnoFinal: finalYear,
         },
       });
 
