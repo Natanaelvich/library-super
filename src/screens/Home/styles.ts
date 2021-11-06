@@ -1,5 +1,6 @@
-import { ScrollView, ScrollViewProps } from "react-native";
+import { FlatList } from "react-native";
 import styled from "styled-components/native";
+import { Book } from "../../context/booksContext";
 
 export const Container = styled.View`
   flex: 1;
@@ -12,12 +13,18 @@ export const Header = styled.View`
 padding: 0 24px 0;
 `
 
-export const ContentScroll = styled.ScrollView.attrs({
+export const ListBooks = styled(FlatList as new () => FlatList<Book>).attrs({
   contentContainerStyle: {
     paddingHorizontal: 24,
-    paddingBottom: 24,
   },
-} as ScrollViewProps)``;
+})``;
+
+export const WrapperLoadingPagination = styled.View`
+height: 64px;
+width: 100%;
+align-items: center;
+justify-content: center;
+`
 
 export const ButtonMenu = styled.TouchableOpacity`
   margin-bottom: 24px;

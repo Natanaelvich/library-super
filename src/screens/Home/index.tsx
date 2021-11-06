@@ -1,7 +1,7 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Keyboard } from "react-native";
+import { ActivityIndicator, Keyboard, RefreshControl } from "react-native";
 import { useTheme } from "styled-components/native";
 import CardBook from "../../Components/CardBook";
 import ModalPickerPeriod from "../../Components/ModalPickerPeriod";
@@ -20,13 +20,15 @@ export type Book = {
 
 const Home: React.FC = () => {
   const navigation = useNavigation();
-  const theme = useTheme()
+  const theme = useTheme();
 
   const {
     books,
     results,
     loading,
+    loadingPagination,
     getBooks,
+    getBooksPagination,
     handleSearchBook,
     handleSearchBookByPeriod,
   } = useBooks();
@@ -93,17 +95,46 @@ const Home: React.FC = () => {
       </S.Header>
 
       {loading ? (
-        <ActivityIndicator animating={loading} size="large" color="#fb7750" />
+        <ActivityIndicator animating={loading} size="large" color={theme.colors.primary} />
       ) : (
-        <S.ContentScroll>
-          {books.map((b) => (
-            <CardBook
-              onPress={() => handleNavigateToBookDetails(b)}
-              key={b.id}
-              book={b}
-            />
-          ))}
-        </S.ContentScroll>
+        <>
+          <S.ListBooks
+            data={books}
+            keyExtractor={(item) => item.id}
+            refreshControl={
+              <RefreshControl
+                refreshing={loading}
+                onRefresh={() => {
+                  getBooks();
+                }}
+              />
+            }
+            renderItem={({ item }) => (
+              <CardBook
+                onPress={() => handleNavigateToBookDetails(item)}
+                key={item.id}
+                book={item}
+              />
+            )}
+            onEndReachedThreshold={0}
+            onEndReached={() => {
+              if (!loadingPagination) {
+                getBooksPagination();
+              }
+            }}
+            ListFooterComponent={() => (
+              <S.WrapperLoadingPagination>
+                {loadingPagination && (
+                  <ActivityIndicator
+                    animating={loadingPagination}
+                    size="large"
+                    color={theme.colors.primary}
+                  />
+                )}
+              </S.WrapperLoadingPagination>
+            )}
+          />
+        </>
       )}
 
       <ModalPickerPeriod

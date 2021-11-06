@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useCallback, useState } from "react";
 import { Keyboard } from "react-native";
 import api from "../services/api";
 
@@ -21,9 +21,11 @@ export type BookDetailsProps = {
 
 export type BooksContextData = {
   books: Book[];
-  loading : boolean;
-  results : number;
+  loading: boolean;
+  loadingPagination: boolean;
+  results: number;
   getBooks: () => Promise<void>;
+  getBooksPagination: () => Promise<void>;
   handleSearchBook: (querySearch: string) => Promise<void>;
   handleSearchBookByPeriod: (
     initialYear: string,
@@ -37,11 +39,19 @@ const BooksProvider: React.FC = ({ children }) => {
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState(0);
+  const [loadingPagination, setLoadingPagination] = useState(false);
+  const [skipCount, setSkipCount] = useState(20);
 
   async function getBooks() {
     try {
       setLoading(true);
-      const response = await api.get("/api/Livros");
+      setSkipCount(20)
+      
+      const response = await api.get("/api/Livros", {
+        params: {
+          MaxResultCount: 20,
+        },
+      });
 
       setBooks(response.data.items);
       setResults(response.data.totalCount);
@@ -51,6 +61,27 @@ const BooksProvider: React.FC = ({ children }) => {
       setLoading(false);
     }
   }
+
+  const getBooksPagination = useCallback(async () => {
+    try {
+        console.log(skipCount)
+      setLoadingPagination(true);
+      const response = await api.get("/api/Livros", {
+        params: {
+          MaxResultCount: 20,
+          SkipCount: skipCount,
+        },
+      });
+
+      setSkipCount(skipCount + 20);
+      setBooks([...books, ...response.data.items]);
+      setResults(response.data.totalCount);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingPagination(false);
+    }
+  }, [skipCount, books]);
 
   async function handleSearchBook(querySearch: string) {
     try {
@@ -101,8 +132,10 @@ const BooksProvider: React.FC = ({ children }) => {
       value={{
         books,
         loading,
+        loadingPagination,
         results,
         getBooks,
+        getBooksPagination,
         handleSearchBook,
         handleSearchBookByPeriod,
       }}
