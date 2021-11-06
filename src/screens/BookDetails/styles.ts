@@ -1,8 +1,10 @@
+import { Platform } from "react-native";
+import { getStatusBarHeight } from "react-native-iphone-x-helper";
 import styled from "styled-components/native";
 
 export const Container = styled.View`
   flex: 1;
-  padding: 55px 24px 24px;
+  padding: ${Platform.OS === "ios" ? 55 + getStatusBarHeight() : 55}px 24px 24px;
   background-color: ${({theme})=> theme.colors.gray};
 `;
 

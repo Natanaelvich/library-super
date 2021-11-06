@@ -1,22 +1,48 @@
-import { ViewProps } from "react-native";
+import {
+  KeyboardAvoidingView,
+  KeyboardAvoidingViewProps,
+  ScrollViewProps,
+  ViewProps,
+} from "react-native";
+import {
+  getBottomSpace,
+  getStatusBarHeight,
+} from "react-native-iphone-x-helper";
 import styled, { css } from "styled-components/native";
 
-export const ModalContainer = styled.View`
-  flex: 1;
+// export const ModalContainer = styled.View`
+// flex : 1;
+//   background-color: rgba(0, 0, 0, 0.64);
+// `;
+
+export const KeyboardAvoidingViewCustom = styled(KeyboardAvoidingView).attrs({
+  contentContainerStyle: {
+    flexGrow: 1,
+  },
+
+} as KeyboardAvoidingViewProps)`
   background-color: rgba(0, 0, 0, 0.64);
+  flex: 1;
 `;
 
-export const ModalContent = styled.View`
-  padding: 54px 24px 24px;
-  background-color: ${({ theme }) => theme.colors.gray};
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  margin-top: auto;
+export const ModalContent = styled.ScrollView.attrs(
+  ({ theme }) =>
+    ({
+      contentContainerStyle: {
+        backgroundColor: theme.colors.gray,
+        alignItems: "center",
+        // justifyContent: "center",
+        // position: "relative",
 
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-`;
+        borderTopLeftRadius: 12,
+        borderTopRightRadius: 12,
+        paddingHorizontal: 24,
+        paddingBottom: 24 + getBottomSpace(),
+        paddingTop: 24 + getStatusBarHeight(),
+        marginTop: "auto",
+      },
+    } as ScrollViewProps)
+)``;
 
 export const WrapperRow = styled.View`
   flex-direction: row;

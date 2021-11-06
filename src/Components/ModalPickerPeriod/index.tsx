@@ -1,6 +1,6 @@
 import { AntDesign } from "@expo/vector-icons";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Alert, Modal } from "react-native";
+import { Alert, Modal, Platform } from "react-native";
 import { useTheme } from "styled-components/native";
 
 import * as S from "./styles";
@@ -52,7 +52,7 @@ const ModalPickerPeriod: React.FC<Props> = ({
       visible={visible}
       onRequestClose={() => onClose()}
     >
-      <S.ModalContainer>
+      <S.ModalContainer   behavior={Platform.OS === "ios" ? "padding" : undefined}>
         <S.ModalContent>
           <S.WrapperCloseButon>
             <AntDesign

@@ -63,7 +63,12 @@ const Home: React.FC = () => {
   return (
     <S.Container>
       <S.Header>
-        <S.ButtonMenu onPress={handleOpenDrawer}>
+        <S.ButtonMenu onPress={handleOpenDrawer} hitSlop={{
+            bottom: 16,
+            top: 16,
+            right: 16,
+            left: 16
+        }}>
           <MaterialIcons name="menu" size={24} color={theme.colors.textBold} />
         </S.ButtonMenu>
 
@@ -163,20 +168,24 @@ const Home: React.FC = () => {
         <MaterialIcons name="add" color={theme.colors.white} size={24} />
       </S.ButtonAddBook>
 
-      <ModalPickerPeriod
-        visible={showModalPickerPeriod}
-        onClose={() => setShowModalPickerPeriod(false)}
-        handleSearch={handleSearchBookByPeriod}
-        initialYear={initialYear}
-        finalYear={finalYear}
-        setFinalYear={setFinalYear}
-        setInitialYear={setInitialYear}
-      />
+      {showModalPickerPeriod && (
+        <ModalPickerPeriod
+          visible={showModalPickerPeriod}
+          onClose={() => setShowModalPickerPeriod(false)}
+          handleSearch={handleSearchBookByPeriod}
+          initialYear={initialYear}
+          finalYear={finalYear}
+          setFinalYear={setFinalYear}
+          setInitialYear={setInitialYear}
+        />
+      )}
 
-      <ModalAddBook
-        visible={showModalAddBook}
-        onClose={() => setShowModalAddBook(false)}
-      />
+      {showModalAddBook && (
+        <ModalAddBook
+          visible={showModalAddBook}
+          onClose={() => setShowModalAddBook(false)}
+        />
+      )}
     </S.Container>
   );
 };

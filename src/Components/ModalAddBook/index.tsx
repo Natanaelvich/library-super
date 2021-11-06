@@ -1,6 +1,6 @@
 import { AntDesign } from "@expo/vector-icons";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Alert, Modal } from "react-native";
+import { Alert, KeyboardAvoidingView, Modal, Platform, ScrollView, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import useBooks from "../../hooks/useBooks";
 
@@ -25,6 +25,8 @@ const ModalAddBook: React.FC<Props> = ({ visible, onClose }) => {
   const [comprimento, setComprimento] = useState("");
   const [largura, setLargura] = useState("");
   const [altura, setAltura] = useState("");
+
+  const [enableKeyboardAvoindView, setEnableKeyboardAvoindView] = useState(true)
 
   function handleAddBook() {
     if (
@@ -76,92 +78,114 @@ const ModalAddBook: React.FC<Props> = ({ visible, onClose }) => {
       visible={visible}
       onRequestClose={() => onClose()}
     >
-      <S.ModalContainer>
-        <S.ModalContent>
-          <S.WrapperCloseButon>
-            <AntDesign
-              name="close"
-              size={24}
-              onPress={() => onClose()}
-              color={theme.colors.textBold}
-            />
-          </S.WrapperCloseButon>
-
-          <S.TextInput
-            onChangeText={setTitulo}
-            value={titulo}
-            placeholder="Titulo"
-          />
-          <S.TextInput
-            onChangeText={setIsbn}
-            value={isbn}
-            placeholder="ISBN"
-            maxLength={13}
-            keyboardType="number-pad"
-          />
-          <S.TextInput
-            onChangeText={setAutor}
-            value={autor}
-            placeholder="Autor"
-            keyboardType="number-pad"
-          />
-          <S.TextInput
-            onChangeText={setEditora}
-            value={editora}
-            placeholder="Editora"
-          />
-          <S.TextInput
-            onChangeText={setIdioma}
-            value={idioma}
-            placeholder="Idioma"
-          />
-          <S.WrapperRow>
-            <S.TextInput
-              onChangeText={setAno}
-              value={ano}
-              small
-              placeholder="Ano"
-              maxLength={4}
-              keyboardType="number-pad"
-            />
+  
+        {/* <S.ModalContainer > */}
+      <S.KeyboardAvoidingViewCustom
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        enabled={enableKeyboardAvoindView}
+      >
+          <S.ModalContent>
+              <S.WrapperCloseButon>
+              <AntDesign
+                name="close"
+                size={24}
+                // onPress={() => onClose()}
+                color={theme.colors.textBold}
+              />
+            </S.WrapperCloseButon>
 
             <S.TextInput
-              onChangeText={setPeso}
-              value={peso}
-              small
-              placeholder="Peso"
-              keyboardType="number-pad"
+              onChangeText={setTitulo}
+              value={titulo}
+              placeholder="Titulo"
+              placeholderTextColor={theme.colors.textBold}
+              onFocus={()=> setEnableKeyboardAvoindView(false)}
+              onBlur={()=> setEnableKeyboardAvoindView(true)}
             />
-          </S.WrapperRow>
-          <S.WrapperRow>
             <S.TextInput
-              onChangeText={setComprimento}
-              value={comprimento}
-              extraSmall
-              placeholder="Compr... cm"
+              onChangeText={setIsbn}
+              value={isbn}
+              placeholder="ISBN"
+              placeholderTextColor={theme.colors.textBold}
+              maxLength={13}
               keyboardType="number-pad"
+              onFocus={()=> setEnableKeyboardAvoindView(false)}
+              onBlur={()=> setEnableKeyboardAvoindView(true)}
             />
+            <S.TextInput
+              onChangeText={setAutor}
+              value={autor}
+              placeholder="Autor"
+              placeholderTextColor={theme.colors.textBold}
+              onFocus={()=> setEnableKeyboardAvoindView(false)}
+              onBlur={()=> setEnableKeyboardAvoindView(true)}
+            />
+            <S.TextInput
+              onChangeText={setEditora}
+              value={editora}
+              placeholder="Editora"
+              placeholderTextColor={theme.colors.textBold}
+            />
+            <S.TextInput
+              onChangeText={setIdioma}
+              value={idioma}
+              placeholder="Idioma"
+              placeholderTextColor={theme.colors.textBold}
+            />
+            <S.WrapperRow>
+              <S.TextInput
+                onChangeText={setAno}
+                value={ano}
+                small
+                placeholder="Ano"
+                placeholderTextColor={theme.colors.textBold}
+                maxLength={4}
+                keyboardType="number-pad"
+              />
 
-            <S.TextInput
-              onChangeText={setLargura}
-              value={largura}
-              extraSmall
-              placeholder="Largura cm"
-              keyboardType="number-pad"
-            />
-            <S.TextInput
-              onChangeText={setAltura}
-              value={altura}
-              extraSmall
-              placeholder="Altura cm"
-              keyboardType="number-pad"
-            />
-          </S.WrapperRow>
-          <S.ButtonAdd onPress={handleAddBook}>
-            <S.ButtonAddText>ADICIONAR</S.ButtonAddText>
-          </S.ButtonAdd>
-        </S.ModalContent>
-      </S.ModalContainer>
+              <S.TextInput
+                onChangeText={setPeso}
+                value={peso}
+                small
+                placeholder="Peso"
+                placeholderTextColor={theme.colors.textBold}
+                keyboardType="number-pad"
+              />
+            </S.WrapperRow>
+            <S.WrapperRow>
+              <S.TextInput
+                onChangeText={setComprimento}
+                value={comprimento}
+                extraSmall
+                placeholder="Compr... cm"
+                placeholderTextColor={theme.colors.textBold}
+                keyboardType="number-pad"
+              />
+
+              <S.TextInput
+                onChangeText={setLargura}
+                value={largura}
+                extraSmall
+                placeholder="Largura cm"
+                placeholderTextColor={theme.colors.textBold}
+                keyboardType="number-pad"
+              />
+              <S.TextInput
+                onChangeText={setAltura}
+                value={altura}
+                extraSmall
+                placeholder="Altura cm"
+                placeholderTextColor={theme.colors.textBold}
+                keyboardType="number-pad"
+              />
+            </S.WrapperRow>
+            <S.ButtonAdd onPress={handleAddBook}>
+              <S.ButtonAddText>ADICIONAR</S.ButtonAddText>
+            </S.ButtonAdd>
+          </S.ModalContent>
+      </S.KeyboardAvoidingViewCustom>
+                      
+        {/* </S.ModalContainer> */}
     </Modal>
   );
 };

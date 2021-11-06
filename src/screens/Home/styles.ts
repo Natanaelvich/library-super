@@ -1,4 +1,5 @@
-import { FlatList } from "react-native";
+import { FlatList, Platform } from "react-native";
+import { getBottomSpace, getStatusBarHeight } from "react-native-iphone-x-helper";
 import styled from "styled-components/native";
 import { Book } from "../../context/booksContext";
 
@@ -6,7 +7,7 @@ export const Container = styled.View`
   flex: 1;
   background: ${({ theme }) => theme.colors.gray};
 
-  padding-top: 35px;
+  padding-top: ${35 + getStatusBarHeight()}px;
   position: relative;
 `;
 
@@ -21,7 +22,7 @@ export const ListBooks = styled(FlatList as new () => FlatList<Book>).attrs({
 })``;
 
 export const WrapperLoadingPagination = styled.View`
-  height: 64px;
+  height: ${64 + getBottomSpace()}px;
   width: 100%;
   align-items: center;
   justify-content: center;

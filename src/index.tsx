@@ -1,3 +1,4 @@
+import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { ToastProvider } from "react-native-toast-notifications";
 import AppProvider from "./context";
@@ -9,6 +10,7 @@ const Main: React.FC = () => {
     <ToastProvider>
       <AppProvider>
         <ThemeContainer>
+            <StatusBar backgroundColor='#fff' style='dark' />
           <Routes />
         </ThemeContainer>
       </AppProvider>

@@ -88,7 +88,15 @@ const BookDetails: React.FC = () => {
   return (
     <S.Container>
       <S.Header>
-        <S.ButtonHeader onPress={goBack}>
+        <S.ButtonHeader
+          onPress={goBack}
+          hitSlop={{
+            bottom: 16,
+            top: 16,
+            right: 16,
+            left: 16,
+          }}
+        >
           <MaterialIcons
             name="keyboard-arrow-left"
             size={31}
@@ -96,7 +104,15 @@ const BookDetails: React.FC = () => {
           />
         </S.ButtonHeader>
 
-        <S.ButtonHeader onPress={handleDeleteBook}>
+        <S.ButtonHeader
+          onPress={handleDeleteBook}
+          hitSlop={{
+            bottom: 16,
+            top: 16,
+            right: 16,
+            left: 16,
+          }}
+        >
           <MaterialIcons
             name="delete"
             size={31}

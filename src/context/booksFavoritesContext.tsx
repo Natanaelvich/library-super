@@ -51,7 +51,7 @@ const BookFavoritesProvider: React.FC = ({ children }) => {
         type: "success",
       });
     },
-    [bookFavorites]
+    [bookFavorites, toast]
   );
   const removeBookFavorite = useCallback(
     async (book: BookFavorite) => {

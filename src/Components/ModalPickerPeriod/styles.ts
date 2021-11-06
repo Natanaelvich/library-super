@@ -1,13 +1,14 @@
-import { ViewProps } from "react-native";
+import { KeyboardAvoidingView, ViewProps } from "react-native";
+import { getBottomSpace } from "react-native-iphone-x-helper";
 import styled from "styled-components/native";
 
-export const ModalContainer = styled.View`
+export const ModalContainer = styled(KeyboardAvoidingView)`
   flex: 1;
   background-color: rgba(0, 0, 0, 0.64);
 `;
 
 export const ModalContent = styled.View`
-  padding: 54px 24px 24px;
+  padding: 54px 24px ${24 + getBottomSpace()}px;
   background-color: ${({ theme }) => theme.colors.gray};
   align-items: center;
   justify-content: center;
