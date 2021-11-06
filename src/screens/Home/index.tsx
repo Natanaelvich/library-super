@@ -35,6 +35,8 @@ const Home: React.FC = () => {
 
   const [querySearch, setQuerySearch] = useState("");
   const [showModalPickerPeriod, setShowModalPickerPeriod] = useState(false);
+  const [initialYear, setInitialYear] = useState("");
+  const [finalYear, setFinalYear] = useState("");
 
   function handleOpenDrawer() {
     navigation.dispatch(DrawerActions.openDrawer());
@@ -42,6 +44,14 @@ const Home: React.FC = () => {
 
   function handleNavigateToBookDetails(book: Book) {
     navigation.navigate("BookDetails", { bookId: book.id });
+  }
+
+  function clearFilters() {
+    setQuerySearch("");
+    setInitialYear("");
+    setFinalYear("");
+
+    getBooks()
   }
 
   useEffect(() => {
@@ -90,12 +100,24 @@ const Home: React.FC = () => {
             </S.TextUnderline>{" "}
           </S.TextSmall>
 
+          {(!!querySearch ||
+            !!initialYear ||
+            !!finalYear) && (
+              <S.TextUnderline onPress={clearFilters}>
+                Limpar Filtros
+              </S.TextUnderline>
+            )}
+
           {results > 0 && <S.TextResults>{results} resultados</S.TextResults>}
         </S.WrapperRow>
       </S.Header>
 
       {loading ? (
-        <ActivityIndicator animating={loading} size="large" color={theme.colors.primary} />
+        <ActivityIndicator
+          animating={loading}
+          size="large"
+          color={theme.colors.primary}
+        />
       ) : (
         <>
           <S.ListBooks
@@ -119,7 +141,7 @@ const Home: React.FC = () => {
             onEndReachedThreshold={0}
             onEndReached={() => {
               if (!loadingPagination) {
-                getBooksPagination();
+                getBooksPagination(querySearch, initialYear, finalYear);
               }
             }}
             ListFooterComponent={() => (
@@ -141,6 +163,10 @@ const Home: React.FC = () => {
         visible={showModalPickerPeriod}
         onClose={() => setShowModalPickerPeriod(false)}
         handleSearch={handleSearchBookByPeriod}
+        initialYear={initialYear}
+        finalYear={finalYear}
+        setFinalYear={setFinalYear}
+        setInitialYear={setInitialYear}
       />
     </S.Container>
   );
