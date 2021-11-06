@@ -5,9 +5,9 @@
 ## ScreenShots ANDROID
 
 <p align='center'>
-<img src='https://user-images.githubusercontent.com/52014318/140614649-e0ec346a-5337-468f-8a61-0a1227309831.png' width='275' />
-<img src='https://user-images.githubusercontent.com/52014318/140614651-aff55f22-9b82-437e-b852-4fe043de362f.png' width='275' />
-<img src='https://user-images.githubusercontent.com/52014318/140614653-fa20d196-ffe7-49f3-bdba-1ead54b3b4f6.png' width='275' />
+<img src='https://user-images.githubusercontent.com/52014318/140614649-e0ec346a-5337-468f-8a61-0a1227309831.png' width='245' />
+<img src='https://user-images.githubusercontent.com/52014318/140614651-aff55f22-9b82-437e-b852-4fe043de362f.png' width='245' />
+<img src='https://user-images.githubusercontent.com/52014318/140614653-fa20d196-ffe7-49f3-bdba-1ead54b3b4f6.png' width='245' />
 </p>
 
 <p align='center'>
