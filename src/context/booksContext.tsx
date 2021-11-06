@@ -118,7 +118,6 @@ const BooksProvider: React.FC = ({ children }) => {
   const getBooksPagination = useCallback(
     async (querySearch: string, initialYear: string, finalYear: string) => {
       try {
-        console.log(skipCount);
         setLoadingPagination(true);
         const response = await api.get("/api/Livros", {
           params: {
