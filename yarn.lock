@@ -4741,6 +4741,11 @@ react-native-screens@~3.8.0:
   dependencies:
     warn-once "^0.1.0"
 
+react-native-toast-notifications@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-toast-notifications/-/react-native-toast-notifications-3.2.2.tgz#884af05c2a8d32ed6a4e49a6d1a7720053b25ec8"
+  integrity sha512-44x1Nr0QVnpE/2+Xyiv3Cd9S5MlgxS+5YdCioHfass36pJQAF9sSh3bHPakGNoT0e+kCp9A46CJE9E9BbwSDUw==
+
 react-native-web@0.17.1:
   version "0.17.1"
   resolved "https://registry.yarnpkg.com/react-native-web/-/react-native-web-0.17.1.tgz#90d473c89dd99b88bc9830b2a9fcdd2fc5f04902"
