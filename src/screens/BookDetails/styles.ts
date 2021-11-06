@@ -6,8 +6,12 @@ export const Container = styled.View`
   background-color: ${({theme})=> theme.colors.gray};
 `;
 
-export const ButtonBack = styled.TouchableOpacity`
+export const Header = styled.View`
+flex-direction: row;
 margin-bottom: 85px;
+justify-content: space-between;
+`
+export const ButtonHeader = styled.TouchableOpacity`
 `
 
 export const Title = styled.Text`

@@ -30,7 +30,7 @@ const ThemeProvider: React.FC = ({ children }) => {
       }
     }
 
-    getThemeType()
+    getThemeType();
   }, []);
 
   return (

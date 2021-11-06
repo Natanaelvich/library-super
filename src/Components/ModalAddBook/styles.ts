@@ -1,5 +1,5 @@
 import { ViewProps } from "react-native";
-import styled from "styled-components/native";
+import styled, { css } from "styled-components/native";
 
 export const ModalContainer = styled.View`
   flex: 1;
@@ -18,28 +18,44 @@ export const ModalContent = styled.View`
   border-top-right-radius: 12px;
 `;
 
-export const WrapperInputs = styled.View`
+export const WrapperRow = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  margin: 24px 0;
   width: 100%;
   align-items: center;
 `;
 
-export const TextInput = styled.TextInput`
-  height: 51px;
+export const TextInput = styled.TextInput<{
+  small?: boolean;
+  extraSmall?: boolean;
+}>`
+  height: 40px;
+  margin: 12px 0;
 
-  background: ${({ theme }) => theme.colors.secundary};
+  background: ${({ theme }) => theme.colors.white};
   border-radius: 6px;
-  width: 45%;
+  padding-left: 12px;
+  width: 100%;
+  color: ${({ theme }) => theme.colors.textBold};
 
+  ${({ small, extraSmall }) => {
+    if (small) {
+      return css`
+        width: 45%;
+      `;
+    }
+    if (extraSmall) {
+      return css`
+        width: 30%;
+        padding-left: 0;
+        text-align: center;
+      `;
+    }
+  }}
   font-size: 18px;
-  color: ${({ theme }) => theme.colors.white};
-
-  text-align: center;
 `;
 
-export const ButtonSearch = styled.TouchableOpacity`
+export const ButtonAdd = styled.TouchableOpacity`
   border-radius: 10px;
 
   align-items: center;
@@ -48,9 +64,11 @@ export const ButtonSearch = styled.TouchableOpacity`
   height: 45px;
 
   background: ${({ theme }) => theme.colors.primary};
+
+  margin-top: 12px;
 `;
 
-export const ButtonSearchText = styled.Text`
+export const ButtonAddText = styled.Text`
   font-weight: bold;
   color: ${({ theme }) => theme.colors.white};
 `;

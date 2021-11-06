@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import { Keyboard } from "react-native";
+import { useToast } from "react-native-toast-notifications";
 import api from "../services/api";
 
 export type BookFavorite = {
@@ -31,6 +32,8 @@ const BookFavoritesContext = createContext<BookFavoritesContextData>(
 );
 
 const BookFavoritesProvider: React.FC = ({ children }) => {
+  const toast = useToast();
+
   const [bookFavorites, setBookFavorites] = useState<BookFavorite[]>([]);
 
   const addBookFavorite = useCallback(
@@ -43,6 +46,10 @@ const BookFavoritesProvider: React.FC = ({ children }) => {
         "favorites:books",
         JSON.stringify(bookFavoritesTemp)
       );
+
+      toast.show("Livro adicionado aos favoritos", {
+        type: "success",
+      });
     },
     [bookFavorites]
   );
@@ -56,6 +63,8 @@ const BookFavoritesProvider: React.FC = ({ children }) => {
         "favorites:books",
         JSON.stringify(bookFavoritesTemp)
       );
+
+      toast.show("Livro removido dos favoritos");
     },
     [bookFavorites]
   );

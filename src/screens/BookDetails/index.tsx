@@ -6,8 +6,9 @@ import {
 } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useMemo, useState } from "react";
-import { ActivityIndicator, Text } from "react-native";
+import { ActivityIndicator, Alert, Text } from "react-native";
 import { useTheme } from "styled-components/native";
+import useBooks from "../../hooks/useBooks";
 import useFavoritesBooks from "../../hooks/useFavoritesBooks";
 import api from "../../services/api";
 import { Book } from "../Home";
@@ -28,6 +29,7 @@ const BookDetails: React.FC = () => {
   const theme = useTheme();
   const { addBookFavorite, bookFavorites, removeBookFavorite } =
     useFavoritesBooks();
+  const { deleteBook } = useBooks();
 
   const { bookId } = route.params as { bookId: string };
 
@@ -67,16 +69,41 @@ const BookDetails: React.FC = () => {
     }
   }
 
+  function handleDeleteBook() {
+    Alert.alert("Deseja realmente excluir esse livro?", "", [
+      {
+        text: "Sim",
+        onPress: () => {
+          goBack();
+          deleteBook(bookId);
+        },
+      },
+      {
+        text: "Não",
+        style: "cancel",
+      },
+    ]);
+  }
+
   return (
     <S.Container>
-      <S.ButtonBack onPress={goBack}>
-        <MaterialIcons
-          name="keyboard-arrow-left"
-          size={31}
-          color={theme.colors.textBold}
-        />
-      </S.ButtonBack>
+      <S.Header>
+        <S.ButtonHeader onPress={goBack}>
+          <MaterialIcons
+            name="keyboard-arrow-left"
+            size={31}
+            color={theme.colors.textBold}
+          />
+        </S.ButtonHeader>
 
+        <S.ButtonHeader onPress={handleDeleteBook}>
+          <MaterialIcons
+            name="delete"
+            size={31}
+            color={theme.colors.textBold}
+          />
+        </S.ButtonHeader>
+      </S.Header>
       {loading ? (
         <ActivityIndicator
           animating={loading}

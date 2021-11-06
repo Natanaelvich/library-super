@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useState } from "react";
 import { Keyboard } from "react-native";
+import { useToast } from "react-native-toast-notifications";
 import api from "../services/api";
 
 export type Book = {
@@ -12,11 +13,11 @@ export type Book = {
 };
 
 export type BookDetailsProps = {
-  idioma: "string";
-  peso: 0;
-  comprimento: 0;
-  largura: 0;
-  altura: 0;
+  idioma: string;
+  peso: number;
+  comprimento: number;
+  largura: number;
+  altura: number;
 } & Book;
 
 export type BooksContextData = {
@@ -24,9 +25,14 @@ export type BooksContextData = {
   loading: boolean;
   loadingPagination: boolean;
   results: number;
+  addBook: (book: Omit<BookDetailsProps, "id">) => Promise<void>;
+  deleteBook: (bookId: string) => Promise<void>;
   getBooks: () => Promise<void>;
-  getBooksPagination: (querySearch: string,initialYear: string,
-    finalYear: string) => Promise<void>;
+  getBooksPagination: (
+    querySearch: string,
+    initialYear: string,
+    finalYear: string
+  ) => Promise<void>;
   handleSearchBook: (querySearch: string) => Promise<void>;
   handleSearchBookByPeriod: (
     initialYear: string,
@@ -37,6 +43,8 @@ export type BooksContextData = {
 const BooksContext = createContext<BooksContextData>({} as BooksContextData);
 
 const BooksProvider: React.FC = ({ children }) => {
+  const toast = useToast();
+
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState(0);
@@ -46,8 +54,8 @@ const BooksProvider: React.FC = ({ children }) => {
   async function getBooks() {
     try {
       setLoading(true);
-      setSkipCount(20)
-      
+      setSkipCount(20);
+
       const response = await api.get("/api/Livros", {
         params: {
           MaxResultCount: 20,
@@ -63,30 +71,76 @@ const BooksProvider: React.FC = ({ children }) => {
     }
   }
 
-  const getBooksPagination = useCallback(async (querySearch: string,initialYear: string,
-    finalYear: string) => {
+  async function addBook(book: Omit<BookDetailsProps, "id">) {
     try {
-        console.log(skipCount)
-      setLoadingPagination(true);
-      const response = await api.get("/api/Livros", {
-        params: {
-          MaxResultCount: 20,
-          SkipCount: skipCount,
-          Busca: querySearch,
-          AnoInicial: initialYear,
-          AnoFinal: finalYear,
-        },
+      setLoading(true);
+      setSkipCount(20);
+
+      await api.post("/api/Livros", book);
+
+      toast.show("Livro adicionado com sucesso", {
+        type: "success",
       });
 
-      setSkipCount(skipCount + 20);
-      setBooks([...books, ...response.data.items]);
-      setResults(response.data.totalCount);
+      getBooks();
     } catch (error) {
       console.log(error);
+      toast.show("Houve um erro ao cadastrar seu livro, tente novamente", {
+        type: "danger",
+      });
     } finally {
-      setLoadingPagination(false);
+      setLoading(false);
     }
-  }, [skipCount, books]);
+  }
+
+  async function deleteBook(bookId: string) {
+    try {
+      setLoading(true);
+      setSkipCount(20);
+
+      await api.delete(`/api/Livros/${bookId}`);
+
+      toast.show("Livro deletado com sucesso", {
+        type: "success",
+      });
+
+      getBooks();
+    } catch (error) {
+      console.log(error);
+      toast.show("Houve um erro ao deletar seu livro,", {
+        type: "danger",
+      });
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const getBooksPagination = useCallback(
+    async (querySearch: string, initialYear: string, finalYear: string) => {
+      try {
+        console.log(skipCount);
+        setLoadingPagination(true);
+        const response = await api.get("/api/Livros", {
+          params: {
+            MaxResultCount: 20,
+            SkipCount: skipCount,
+            Busca: querySearch,
+            AnoInicial: initialYear,
+            AnoFinal: finalYear,
+          },
+        });
+
+        setSkipCount(skipCount + 20);
+        setBooks([...books, ...response.data.items]);
+        setResults(response.data.totalCount);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoadingPagination(false);
+      }
+    },
+    [skipCount, books]
+  );
 
   async function handleSearchBook(querySearch: string) {
     try {
@@ -139,6 +193,8 @@ const BooksProvider: React.FC = ({ children }) => {
         loading,
         loadingPagination,
         results,
+        addBook,
+        deleteBook,
         getBooks,
         getBooksPagination,
         handleSearchBook,

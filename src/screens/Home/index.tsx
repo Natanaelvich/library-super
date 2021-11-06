@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Keyboard, RefreshControl } from "react-native";
 import { useTheme } from "styled-components/native";
 import CardBook from "../../Components/CardBook";
+import ModalAddBook from "../../Components/ModalAddBook";
 import ModalPickerPeriod from "../../Components/ModalPickerPeriod";
 import useBooks from "../../hooks/useBooks";
 
@@ -35,6 +36,7 @@ const Home: React.FC = () => {
 
   const [querySearch, setQuerySearch] = useState("");
   const [showModalPickerPeriod, setShowModalPickerPeriod] = useState(false);
+  const [showModalAddBook, setShowModalAddBook] = useState(false);
   const [initialYear, setInitialYear] = useState("");
   const [finalYear, setFinalYear] = useState("");
 
@@ -51,7 +53,7 @@ const Home: React.FC = () => {
     setInitialYear("");
     setFinalYear("");
 
-    getBooks()
+    getBooks();
   }
 
   useEffect(() => {
@@ -100,13 +102,11 @@ const Home: React.FC = () => {
             </S.TextUnderline>{" "}
           </S.TextSmall>
 
-          {(!!querySearch ||
-            !!initialYear ||
-            !!finalYear) && (
-              <S.TextUnderline onPress={clearFilters}>
-                Limpar Filtros
-              </S.TextUnderline>
-            )}
+          {(!!querySearch || !!initialYear || !!finalYear) && (
+            <S.TextUnderline onPress={clearFilters}>
+              Limpar Filtros
+            </S.TextUnderline>
+          )}
 
           {results > 0 && <S.TextResults>{results} resultados</S.TextResults>}
         </S.WrapperRow>
@@ -159,6 +159,10 @@ const Home: React.FC = () => {
         </>
       )}
 
+      <S.ButtonAddBook onPress={() => setShowModalAddBook(true)}>
+        <MaterialIcons name="add" color={theme.colors.white} size={24} />
+      </S.ButtonAddBook>
+
       <ModalPickerPeriod
         visible={showModalPickerPeriod}
         onClose={() => setShowModalPickerPeriod(false)}
@@ -167,6 +171,11 @@ const Home: React.FC = () => {
         finalYear={finalYear}
         setFinalYear={setFinalYear}
         setInitialYear={setInitialYear}
+      />
+
+      <ModalAddBook
+        visible={showModalAddBook}
+        onClose={() => setShowModalAddBook(false)}
       />
     </S.Container>
   );

@@ -1,15 +1,18 @@
 import React from "react";
+import { ToastProvider } from "react-native-toast-notifications";
 import AppProvider from "./context";
 import Routes from "./routes";
 import ThemeContainer from "./theme";
 
 const Main: React.FC = () => {
   return (
-    <AppProvider>
-      <ThemeContainer>
-        <Routes />
-      </ThemeContainer>
-    </AppProvider>
+    <ToastProvider>
+      <AppProvider>
+        <ThemeContainer>
+          <Routes />
+        </ThemeContainer>
+      </AppProvider>
+    </ToastProvider>
   );
 };
 

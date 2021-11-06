@@ -26,12 +26,11 @@ const ModalPickerPeriod: React.FC<Props> = ({
 }) => {
   const theme = useTheme();
 
-  
-  useEffect(()=>{
-      setInitialYear(initialYear || "2021")
-      setFinalYear(finalYear || "2021")
-  },[]);
-  
+  useEffect(() => {
+    setInitialYear(initialYear || "2021");
+    setFinalYear(finalYear || "2021");
+  }, []);
+
   function handleSearchByPeriod() {
     if (initialYear.length === 0 || finalYear.length === 0) {
       Alert.alert("Todos os campos são obrigatórios");
